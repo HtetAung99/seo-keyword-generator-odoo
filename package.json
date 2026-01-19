@@ -1,0 +1,28 @@
+{
+  "name": "seo-odoo",
+  "version": "1.0.0",
+  "description": "LLM-Powered SEO Assistant for Odoo",
+  "type": "module",
+  "scripts": {
+    "build": "npm run clean && mkdir -p dist/options dist/content dist/background && npm run copy:static && npm run build:content && npm run build:background && npm run build:options",
+    "copy:static": "cp manifest.json dist/ && cp -r assets dist/ && cp src/options/options.html src/options/options.css dist/options/",
+    "build:content": "esbuild src/content/content.ts --bundle --outfile=dist/content/content.js --format=iife --target=chrome100",
+    "build:background": "esbuild src/background/service-worker.ts --bundle --outfile=dist/background/service-worker.js --format=esm --target=chrome100",
+    "build:options": "esbuild src/options/options.ts --bundle --outfile=dist/options/options.js --format=iife --target=chrome100",
+    "watch": "npm run build && npx chokidar 'src/**/*.ts' 'manifest.json' -c 'npm run build'",
+    "dev": "web-ext run --source-dir=dist --target=chromium --start-url=${ODOO_DEV_URL:-http://localhost:8069/shop}",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "chokidar": "^5.0.0",
+    "chokidar-cli": "^3.0.0",
+    "esbuild": "^0.21.0",
+    "typescript": "^5.4.0",
+    "web-ext": "^9.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
