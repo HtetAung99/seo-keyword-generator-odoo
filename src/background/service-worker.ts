@@ -1,4 +1,5 @@
 import { getConfig } from '../utils/storage.js';
+import { registerContentScript } from '../utils/permissions.js';
 import {
   ExtensionConfig,
   ExtensionMessage,
@@ -264,4 +265,21 @@ function validateSEOResponse(data: unknown, mode: string): SEOResponse {
   return response;
 }
 
-chrome.runtime.onInstalled.addListener(() => {});
+chrome.runtime.onInstalled.addListener(async () => {
+  await restoreContentScript();
+});
+
+chrome.runtime.onStartup.addListener(async () => {
+  await restoreContentScript();
+});
+
+async function restoreContentScript(): Promise<void> {
+  try {
+    const config = await getConfig();
+    if (config.odooDomain) {
+      await registerContentScript(config.odooDomain);
+    }
+  } catch (error) {
+    console.error('[SEO-Odoo] Failed to restore content script:', error);
+  }
+}

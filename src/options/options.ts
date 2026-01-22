@@ -1,5 +1,6 @@
 import { getConfig, setConfig, clearConfig } from '../utils/storage.js';
 import { ExtensionConfig, DEFAULT_CONFIG, LLMProvider } from '../types/index.js';
+import { requestDomainPermission, registerContentScript } from '../utils/permissions.js';
 
 class OptionsPage {
   private form: HTMLFormElement | null = null;
@@ -110,6 +111,15 @@ class OptionsPage {
     };
 
     try {
+      if (odooDomain) {
+        const permissionGranted = await requestDomainPermission(odooDomain);
+        if (!permissionGranted) {
+          this.showStatus('Permission denied. Please allow access to your Odoo domain.', 'error');
+          return;
+        }
+        await registerContentScript(odooDomain);
+      }
+
       await setConfig(config);
       this.showStatus('Settings saved successfully!', 'success');
     } catch (error) {
