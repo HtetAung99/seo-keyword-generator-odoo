@@ -155,31 +155,26 @@ export class SEOInjector {
       try {
         keywordInput.focus();
         keywordInput.value = '';
-        
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          'value'
-        )?.set;
-        
-        if (nativeInputValueSetter) {
-          nativeInputValueSetter.call(keywordInput, trimmedKeyword);
-        } else {
-          keywordInput.value = trimmedKeyword;
-        }
-        
         keywordInput.dispatchEvent(new Event('input', { bubbles: true }));
+        
+        await this.delay(50);
+
+        for (const char of trimmedKeyword) {
+          keywordInput.value += char;
+          keywordInput.dispatchEvent(new InputEvent('input', {
+            bubbles: true,
+            data: char,
+            inputType: 'insertText',
+          }));
+        }
+
         keywordInput.dispatchEvent(new Event('change', { bubbles: true }));
-        keywordInput.dispatchEvent(new InputEvent('input', { 
-          bubbles: true, 
-          data: trimmedKeyword,
-          inputType: 'insertText'
-        }));
 
         await this.delay(100);
 
         addButton.click();
 
-        await this.delay(150);
+        await this.delay(200);
 
         addedCount++;
         debug(`Added keyword: ${trimmedKeyword}`);

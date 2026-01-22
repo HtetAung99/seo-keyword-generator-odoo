@@ -85,11 +85,11 @@ Market: ${context.marketHint}
 `.trim();
 
   if (mode === 'keywords') {
-    return `You are an SEO assistant for an ecommerce store in Myanmar. Given the following product details, generate 15-25 concise SEO keywords suitable for a product page.
+    return `You are an SEO assistant for an ecommerce store in Myanmar. Given the following product details, generate exactly 10 concise SEO keywords suitable for a product page.
 
 Generate keywords in BOTH English and Burmese (Myanmar language):
-- 10-15 English keywords (high-intent queries, max 3 words each)
-- 5-10 Burmese keywords (common search terms Myanmar users would use)
+- 8 English keywords (high-intent queries, max 3 words each)
+- 2 Burmese keywords (common search terms Myanmar users would use)
 
 ${productInfo}
 
