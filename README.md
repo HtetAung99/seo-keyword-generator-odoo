@@ -15,7 +15,7 @@ A Chrome Extension (Manifest V3) that uses AI/LLM to generate SEO keywords, titl
 
 ### From Chrome Web Store
 
-1. Visit the [Chrome Web Store listing](#) *(link coming soon)*
+1. Visit the [Chrome Web Store listing](https://chromewebstore.google.com/detail/llm-powered-seo-assistant/eajmmcjdkeekkbblbdfhpdjiodkhncpl)
 2. Click "Add to Chrome"
 3. Configure your API key in extension options
 
